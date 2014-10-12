@@ -19,7 +19,7 @@ var Steam = require('steam');
 After that, simply extend `Steam` variable with `node-steam-groups` ...
 
 ```js
-require('node-steam-groups')(Steam);
+require('steam-groups')(Steam);
 ```
 
 That's it. You can now use additional group functions.
@@ -47,7 +47,7 @@ Decline group invite. This can be used in conjuntion with `node-steam`'s `group`
 var Steam = require('steam');
 
 // Extend node-steam with group functions
-require('node-steam-groups')(Steam);
+require('steam-groups')(Steam);
 
 // Create new SteamClient object
 var client = new Steam.SteamClient();
