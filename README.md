@@ -5,7 +5,7 @@ This is a tiny node.js module which allows user to extend `node-steam` to suppor
 # Installation
 
 ```
-npm install https://github.com/scholtzm/node-steam-groups.git
+npm install git://github.com/scholtzm/node-steam-groups.git
 ```
 
 # Usage
