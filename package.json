@@ -1,5 +1,5 @@
 {
-  "name": "node-steam-groups",
+  "name": "steam-groups",
   "version": "0.0.1",
   "description": "node-steam extension which adds group functions",
   "author": "Michael Scholtz <michael.scholtz@outlook.com>",
