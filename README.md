@@ -1,6 +1,6 @@
 # Steam Groups for node-steam
 
-This is a tiny node.js module which allows user to extend `node-steam` to support group functions. This module therefore fully depends on `node-steam`.
+This is a tiny node.js module which allows user to extend [node-steam](https://github.com/seishun/node-steam) to support group functions. This module therefore fully depends on [node-steam](https://github.com/seishun/node-steam).
 
 # Installation
 
