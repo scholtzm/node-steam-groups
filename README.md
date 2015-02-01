@@ -5,7 +5,7 @@ This is a tiny node.js module which allows user to extend `node-steam` to suppor
 # Installation
 
 ```
-npm install git://github.com/scholtzm/node-steam-groups.git
+npm install steam-groups
 ```
 
 # Usage
@@ -68,4 +68,4 @@ client.on('group', function(steamID, relationship) {
 
 # License
 
-See `LICENSE`.
+MIT. See `LICENSE`.
