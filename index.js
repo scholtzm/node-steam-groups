@@ -1,4 +1,12 @@
 /**
+ * node-steam-groups
+ * node-steam extension which adds group functions
+ * Author: Michael Scholtz <michael.scholtz@outlook.com>
+ * Licence: MIT
+ */
+var ByteBuffer = require('bytebuffer');
+
+/**
  * Export single function which injects new methods into Steam.
  */
 module.exports = function(Steam) {
@@ -8,14 +16,14 @@ module.exports = function(Steam) {
     prototype.acceptGroup = function(steamIdGroup) {
         this._send(EMsg.ClientAcknowledgeClanInvite, GroupMessages.MsgClientAcknowledgeClanInvite.serialize({
             steamIdGroup: steamIdGroup,
-            acceptInvite: true
+            acceptInvite: 1
         }));
     };
 
     prototype.declineGroup = function(steamIdGroup) {
         this._send(EMsg.ClientAcknowledgeClanInvite, GroupMessages.MsgClientAcknowledgeClanInvite.serialize({
             steamIdGroup: steamIdGroup,
-            acceptInvite: false
+            acceptInvite: 0
         }));
     };
 
@@ -23,7 +31,7 @@ module.exports = function(Steam) {
         this._send(EMsg.ClientInviteUserToClan, GroupMessages.MsgClientInviteUserToClan.serialize({
             steamIdInvited: steamIdInvited,
             steamIdGroup: steamIdGroup,
-            unknown: true
+            unknown: 1
         }));
     };
 };
@@ -38,23 +46,13 @@ var MsgClientInviteUserToClan = {
     baseSize: 17,
 
     serialize: function(object) {
-        var buffer = new Buffer(17);
+        var buffer = new ByteBuffer(17, ByteBuffer.LITTLE_ENDIAN);
 
-        buffer.writeUInt64LE(object.steamIdInvited || 0, 0);
-        buffer.writeUInt64LE(object.steamIdGroup || 0, 8);
-        buffer.writeUInt8(object.unknown || 0, 16);
+        buffer.writeUint64(ByteBuffer.Long.fromString(object.steamIdInvited) || 0);
+        buffer.writeUint64(ByteBuffer.Long.fromString(object.steamIdGroup) || 0);
+        buffer.writeUint8(object.unknown || 0);
 
-        return buffer;
-    },
-
-    parse: function(buffer) {
-        var object = {};
-
-        object.steamIdInvited = buffer.readUInt64LE(0);
-        object.steamIdGroup = buffer.readUInt64LE(8);
-        object.unknown = buffer.readUInt8(16);
-
-        return object;
+        return buffer.flip();
     }
 };
 
@@ -65,21 +63,12 @@ var MsgClientAcknowledgeClanInvite = {
     baseSize: 9,
 
     serialize: function(object) {
-        var buffer = new Buffer(9);
+        var buffer = new ByteBuffer(9, ByteBuffer.LITTLE_ENDIAN);
 
-        buffer.writeUInt64LE(object.steamIdGroup || 0, 0);
-        buffer.writeUInt8(object.acceptInvite || 0, 8);
+        buffer.writeUint64(ByteBuffer.Long.fromString(object.steamIdGroup) || 0);
+        buffer.writeUint8(object.acceptInvite || 0);
 
-        return buffer;
-    },
-
-    parse: function(buffer) {
-        var object = {};
-
-        object.steamIdGroup = buffer.readUInt64LE(0);
-        object.acceptInvite = buffer.readUInt8(8);
-
-        return object;
+        return buffer.flip();
     }
 };
 

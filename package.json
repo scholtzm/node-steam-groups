@@ -14,5 +14,8 @@
     "steam",
     "group",
     "groups"
-  ]
+  ],
+  "dependencies": {
+    "bytebuffer": "*"
+  }
 }
