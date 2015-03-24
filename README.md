@@ -1,5 +1,8 @@
 # Steam Groups for node-steam
 
+[![NPM version](http://img.shields.io/npm/v/steam-groups.svg?style=flat)](https://www.npmjs.org/package/steam-groups)
+[![Dependency Status](https://david-dm.org/scholtzm/node-steam-groups.svg?style=flat)](https://david-dm.org/scholtzm/node-steam-groups)
+
 This is a tiny node.js module which allows user to extend [node-steam](https://github.com/seishun/node-steam) to support group functions. This module therefore fully depends on [node-steam](https://github.com/seishun/node-steam).
 
 # Installation
