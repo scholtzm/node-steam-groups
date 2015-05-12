@@ -37,11 +37,11 @@ Example of `groupID64` can be found [here](http://steamcommunity.com/groups/trad
 
 ### acceptGroup(steamIdGroup)
 
-Accept group invite. This can be used in conjuntion with `node-steam`'s `group` event.
+Accept group invite. This can be used in conjunction with `node-steam`'s `group` event.
 
 ### declineGroup(steamIdGroup)
 
-Decline group invite. This can be used in conjuntion with `node-steam`'s `group` event.
+Decline group invite. This can be used in conjunction with `node-steam`'s `group` event.
 
 # Example
 
