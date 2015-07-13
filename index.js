@@ -1,50 +1,59 @@
 /**
  * node-steam-groups
- * node-steam extension which adds group functions
+ * Custom node-steam handler which provides group functions
  * Author: Michael Scholtz <michael.scholtz@outlook.com>
  * Licence: MIT
  */
 var ByteBuffer = require('bytebuffer');
 
+module.exports = SteamGroups;
+
+function SteamGroups(steamClient) {
+  this._client = steamClient;
+}
+
 /**
- * Export single function which injects new methods into Steam.
+ * Invite another user to specific Steam group
  */
-module.exports = function(Steam) {
-    var EMsg = Steam.EMsg;
-    var prototype = Steam.SteamClient.prototype;
-
-    prototype.acceptGroup = function(steamIdGroup) {
-        this._send(EMsg.ClientAcknowledgeClanInvite, GroupMessages.MsgClientAcknowledgeClanInvite.serialize({
-            steamIdGroup: steamIdGroup,
-            acceptInvite: 1
-        }));
-    };
-
-    prototype.declineGroup = function(steamIdGroup) {
-        this._send(EMsg.ClientAcknowledgeClanInvite, GroupMessages.MsgClientAcknowledgeClanInvite.serialize({
-            steamIdGroup: steamIdGroup,
-            acceptInvite: 0
-        }));
-    };
-
-    prototype.groupInvite = function(steamIdGroup, steamIdInvited) {
-        this._send(EMsg.ClientInviteUserToClan, GroupMessages.MsgClientInviteUserToClan.serialize({
+SteamGroups.prototype.inviteUserToGroup = function(steamIdGroup, steamIdInvited) {
+    this._client.send({
+            msg: EMsg.ClientInviteUserToClan
+        },
+        MsgClientInviteUserToClan.serialize({
             steamIdInvited: steamIdInvited,
             steamIdGroup: steamIdGroup,
-            unknown: 1
-        }));
-    };
+            unknown: 1 // I really don't know
+        })
+    );
+};
+
+/**
+ * Accept/decline group invite
+ */
+SteamGroups.prototype.acknowledgeGroupInvite = function(steamIdGroup, response) {
+    this._client.send({
+            msg: EMsg.ClientAcknowledgeClanInvite
+        },
+        MsgClientAcknowledgeClanInvite.serialize({
+            steamIdGroup: steamIdGroup,
+            response: +response
+        })
+    );
+};
+
+/**
+ * Define additional EMsg codes
+ */
+var EMsg = {
+    ClientInviteUserToClan: 744,
+    ClientAcknowledgeClanInvite: 745
 };
 
 /**
  * Define additional Steam messages
  */
-var GroupMessages = {};
-
 // Sending group invites
 var MsgClientInviteUserToClan = {
-    baseSize: 17,
-
     serialize: function(object) {
         var buffer = new ByteBuffer(17, ByteBuffer.LITTLE_ENDIAN);
 
@@ -52,24 +61,18 @@ var MsgClientInviteUserToClan = {
         buffer.writeUint64(ByteBuffer.Long.fromString(object.steamIdGroup) || 0);
         buffer.writeUint8(object.unknown || 0);
 
-        return buffer.flip();
+        return buffer.flip().toBuffer();
     }
 };
 
-GroupMessages.MsgClientInviteUserToClan = MsgClientInviteUserToClan;
-
 // Accepting/declining group invites
 var MsgClientAcknowledgeClanInvite = {
-    baseSize: 9,
-
     serialize: function(object) {
         var buffer = new ByteBuffer(9, ByteBuffer.LITTLE_ENDIAN);
 
         buffer.writeUint64(ByteBuffer.Long.fromString(object.steamIdGroup) || 0);
-        buffer.writeUint8(object.acceptInvite || 0);
+        buffer.writeUint8(object.response || 0);
 
-        return buffer.flip();
+        return buffer.flip().toBuffer();
     }
 };
-
-GroupMessages.MsgClientAcknowledgeClanInvite = MsgClientAcknowledgeClanInvite;
