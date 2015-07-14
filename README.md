@@ -3,7 +3,7 @@
 [![NPM version](http://img.shields.io/npm/v/steam-groups.svg?style=flat)](https://www.npmjs.org/package/steam-groups)
 [![Dependency Status](https://david-dm.org/scholtzm/node-steam-groups.svg?style=flat)](https://david-dm.org/scholtzm/node-steam-groups)
 
-This is a tiny node.js module which allows user to extend [node-steam](https://github.com/seishun/node-steam) to support group functions. This module therefore fully depends on [node-steam](https://github.com/seishun/node-steam).
+This is a tiny node.js module which provides custom [node-steam](https://github.com/seishun/node-steam) handler for group functions.
 
 # Installation
 
@@ -13,54 +13,59 @@ npm install steam-groups
 
 # Usage
 
-Firstly, require `steam` module ...
+Firstly, require `steam` as well as `steam-groups` module ...
 
 ```js
 var Steam = require('steam');
+var SteamGroups = require('steam-groups');
 ```
 
-After that, simply extend `Steam` variable with `steam-groups` ...
+After that, instantiate SteamGroups by providing the Steam client instance as a constructor parameter ...
 
 ```js
-require('steam-groups')(Steam);
+var client = new Steam.SteamClient();
+var steamGroups = new SteamGroups(client);
 ```
 
 That's it. You can now use additional group functions.
 
 # Functions
 
-### groupInvite(steamIdGroup, steamIdInvited)
+### inviteUserToGroup(steamIdGroup, steamIdInvited)
 
 Invite user `steamIdInvited` to group `steamIdGroup`. `steamIdGroup` has to be in `groupID64` format.
 
 Example of `groupID64` can be found [here](http://steamcommunity.com/groups/tradingcards/memberslistxml/).
 
-### acceptGroup(steamIdGroup)
+### acknowledgeGroupInvite(steamIdGroup, response)
 
-Accept group invite. This can be used in conjunction with `node-steam`'s `group` event.
-
-### declineGroup(steamIdGroup)
-
-Decline group invite. This can be used in conjunction with `node-steam`'s `group` event.
+Accept or decline an invite to join group `steamIdGroup`. `response` is a `boolean` value. This can be used in conjunction with `node-steam`'s `group` event.
 
 # Example
 
 ```js
-// Require node-steam first
+// Require node-steam and node-steam-groups first
 var Steam = require('steam');
+var SteamGroups = require('steam-groups');
 
-// Extend node-steam with group functions
-require('steam-groups')(Steam);
-
-// Create new SteamClient object
+// Create new SteamClient object and pass it as a constructor param
 var client = new Steam.SteamClient();
+var steamFriends = new Steam.SteamFriends(client);
+
+var steamGroups = new SteamGroups(client);
 
 // Call logOn and add additional code here ...
 
 // This will work
-client.on('group', function(steamID, relationship) {
+steamFriends.on('group', function(group, relationship) {
     if(relationship === Steam.EClanRelationship.Invited) {
-        client.acceptGroup(steamID);
+        steamGroups.acknowledgeGroupInvite(group, true);
+    }
+});
+
+steamFriends.on('friendMsg', function(user, message, type) {
+    if(type === Steam.EChatEntryType.ChatMsg) {
+        steamGroups.inviteUserToGroup('1234567890', user);
     }
 });
 ```
