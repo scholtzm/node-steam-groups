@@ -39,12 +39,14 @@ Example of `groupID64` can be found [here](http://steamcommunity.com/groups/trad
 
 ### acknowledgeGroupInvite(steamIdGroup, response)
 
-Accept or decline an invite to join group `steamIdGroup`. `response` is a `boolean` value. This can be used in conjunction with `node-steam`'s `group` event.
+Accept or decline an invite to join group `steamIdGroup`. `response` is a `boolean` value.
+
+This can be used in conjunction with `node-steam`'s `group` event.
 
 # Example
 
 ```js
-// Require node-steam and node-steam-groups first
+// Require steam and steam-groups first
 var Steam = require('steam');
 var SteamGroups = require('steam-groups');
 
@@ -54,15 +56,16 @@ var steamFriends = new Steam.SteamFriends(client);
 
 var steamGroups = new SteamGroups(client);
 
-// Call logOn and add additional code here ...
+// Connect to Steam network and add additional code here ...
 
-// This will work
+// Accept any incoming group invite
 steamFriends.on('group', function(group, relationship) {
     if(relationship === Steam.EClanRelationship.Invited) {
         steamGroups.acknowledgeGroupInvite(group, true);
     }
 });
 
+// Invite anyone who messages us to a group
 steamFriends.on('friendMsg', function(user, message, type) {
     if(type === Steam.EChatEntryType.ChatMsg) {
         steamGroups.inviteUserToGroup('1234567890', user);

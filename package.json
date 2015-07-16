@@ -1,7 +1,7 @@
 {
   "name": "steam-groups",
   "version": "1.0.1",
-  "description": "node-steam extension which adds group functions",
+  "description": "Custom node-steam handler which provides group functions",
   "author": "Michael Scholtz <michael.scholtz@outlook.com>",
   "license": "MIT",
   "main": "index.js",
@@ -17,5 +17,8 @@
   ],
   "dependencies": {
     "bytebuffer": "*"
+  },
+  "peerDependencies": {
+    "steam": "1.x"
   }
 }
