@@ -9,7 +9,7 @@ var ByteBuffer = require('bytebuffer');
 module.exports = SteamGroups;
 
 function SteamGroups(steamClient) {
-  this._client = steamClient;
+    this._client = steamClient;
 }
 
 /**
