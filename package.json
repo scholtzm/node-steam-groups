@@ -1,6 +1,6 @@
 {
   "name": "steam-groups",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Custom node-steam handler which provides group functions",
   "author": "Michael Scholtz <michael.scholtz@outlook.com>",
   "license": "MIT",
