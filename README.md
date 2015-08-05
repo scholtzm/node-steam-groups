@@ -5,13 +5,13 @@
 
 This is a tiny node.js module which provides custom [node-steam](https://github.com/seishun/node-steam) handler for group functions.
 
-# Installation
+## Installation
 
 ```
 npm install steam-groups
 ```
 
-# Usage
+## Usage
 
 Firstly, require `steam` as well as `steam-groups` module ...
 
@@ -20,7 +20,7 @@ var Steam = require('steam');
 var SteamGroups = require('steam-groups');
 ```
 
-After that, instantiate SteamGroups by providing the Steam client instance as a constructor parameter ...
+After that, instantiate SteamGroups by providing the Steam client instance as a constructor parameter...
 
 ```js
 var client = new Steam.SteamClient();
@@ -29,21 +29,21 @@ var steamGroups = new SteamGroups(client);
 
 That's it. You can now use additional group functions.
 
-# Functions
+## Methods
 
-### inviteUserToGroup(steamIdGroup, steamIdInvited)
+#### inviteUserToGroup(steamIdGroup, steamIdInvited)
 
 Invite user `steamIdInvited` to group `steamIdGroup`. `steamIdGroup` has to be in `groupID64` format.
 
 Example of `groupID64` can be found [here](http://steamcommunity.com/groups/tradingcards/memberslistxml/).
 
-### acknowledgeGroupInvite(steamIdGroup, response)
+#### acknowledgeGroupInvite(steamIdGroup, response)
 
 Accept or decline an invite to join group `steamIdGroup`. `response` is a `boolean` value.
 
 This can be used in conjunction with `node-steam`'s `group` event.
 
-# Example
+## Example
 
 ```js
 // Require steam and steam-groups first
@@ -58,10 +58,10 @@ var steamGroups = new SteamGroups(client);
 
 // Connect to Steam network and add additional code here ...
 
-// Accept any incoming group invite
+// Decline any incoming group invite
 steamFriends.on('group', function(group, relationship) {
     if(relationship === Steam.EClanRelationship.Invited) {
-        steamGroups.acknowledgeGroupInvite(group, true);
+        steamGroups.acknowledgeGroupInvite(group, false);
     }
 });
 
@@ -73,10 +73,10 @@ steamFriends.on('friendMsg', function(user, message, type) {
 });
 ```
 
-# Disclaimer
+## Disclaimer
 
 `node-steam` is port of `SteamKit2`, which does not support group functions. Automating group functionalities might be against Steam's EULA. There are many people who run trading bots and automate this process, but remember that you are using this at your own risk.
 
-# License
+## License
 
 MIT. See `LICENSE`.
